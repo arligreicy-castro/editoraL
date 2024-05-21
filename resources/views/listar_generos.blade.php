@@ -11,9 +11,7 @@
 					<td>{{$genero->id}}</td>
 					<td>{{$genero->descritivo}}</td>
 					<td>
-						<a href='#'>Alterar</a>
 						<a href='/alterar/{{$genero->id}}'>Alterar</a>
-						<a href='#'>Excluir</a>
 						<a href='/deletar/{{$genero->id}}'>Excluir</a>
 						
 					</td>
