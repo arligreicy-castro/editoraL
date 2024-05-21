@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[\App\Http\Controllers\generoController::class,'index']);
 Route::get('/deletar/{id}',[\App\Http\Controllers\generoController::class,'destroy']);
-Route::get('/inserir/{id}',[\App\Http\Controllers\generoController::class,'create']);
+Route::get('/inserir',[\App\Http\Controllers\generoController::class,'create']);
 Route::post('/cadastrar/{id}',[\App\Http\Controllers\generoController::class,'store']);
 Route::get('/alterar/{id}',[\App\Http\Controllers\generoController::class,'edit']);
 Route::get('/update/{id}',[\App\Http\Controllers\generoController::class,'update']);

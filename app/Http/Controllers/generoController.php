@@ -32,9 +32,9 @@ class generoController extends Controller
     public function store(Request $request)
     {
 	    //dd($request);
-	    $dados = $request->all();
-	    $genero = genero::create($dados);
-	    return redirect("/");
+	   $dados = $request->all();
+	   $genero = genero::create($dados);
+	   return redirect("/");
     }
 
 
@@ -52,7 +52,7 @@ class generoController extends Controller
     public function edit(string $id)
     {
 	    $genero = genero::find($id);
-	    return view('edit_genero', compact('genero'));
+	    return view('edit_generos', compact('genero'));
 	//dd($genero); tipo var_dump
     }
     /**
