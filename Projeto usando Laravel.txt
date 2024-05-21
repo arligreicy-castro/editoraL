@@ -1,0 +1,242 @@
+Projeto usando Laravel 
+----------------------------------------------------------------
+1. criar o banco de dados no xampp > admin (só o nome).
+
+2. abrir CMD e digitar os comandos e aguardar criar.
+
+C:\Users\arlig>cd..
+C:\Users>cd..
+C:\>cd xampp
+C:\xampp>cd htdocs
+C:\xampp\htdocs>composer create-project laravel/laravel + (nome da projeto)
+
+3. subir o servidor digitando o comando:
+C:\xampp\htdocs>cd +(nome da pasta que foi criada no c: que o mesmo nome do projeto)
+C:\xampp\htdocs\(nome da pasta)>php artisan serve
+INFO  Server running on [http://127.0.0.1:8000].
+Press Ctrl+C to stop the server
+
+4. copia o http://127.0.0.1:8000 e cola no navegador para ver se abre a tela do laravel.
+
+5. 5. ir em .env e editar :
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=editoral (para o nome que esta o seu banco de dados)
+DB_USERNAME=root
+DB_PASSWORD=
+
+6. no cmd fazer o comando :
+C:\xampp\htdocs\editoral>php artisan  migrate:install
+para criar a tabela do banco de dados.
+
+7. fazer o comando : (estas tabelas estão na pasta migrations.)
+C:\xampp\htdocs\editoral>php artisan make:migration create-generos-table
+para criar uma tabela gênero.
+fazer o mesmo para criar livros:
+C:\xampp\htdocs\editoral>php artisan make:migration create-livros-table
+
+8. editar os métodos colocando as chaves estrangeiras
+livros:
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('livros', function (Blueprint $table)
+        {
+            $table->id();
+			$table->foreignId('genero_id')->constrained()->cascadeOnDelete();
+			$table->string('titulo');
+			$table->string('sinopse')->nulable();
+            $table->timestamps();
+        });
+    }
+    public function down(): void
+    {
+        Schema::dropIfExists('livros');
+    }
+};
+generos:
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('generos', function (Blueprint $table) 
+        {
+            $table->id();
+			$table->string('descritivo');
+            $table->timestamps();
+        });
+    }
+    public function down(): void
+    {
+        Schema::dropIfExists('generos');
+    }
+};
+
+9. depois executar o comando C:\xampp\htdocs\editoral>php artisan migrate:fresh
+
+10.criar o models livro e genero, comando para criar models:
+
+ C:\xampp\htdocs\editoral>php artisan make:model livro
+ C:\xampp\htdocs\editoral>php artisan make:model genero
+
+11. depois de criado ir em app->models-> editar a função 
+
+livros:
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class livro extends Model
+{
+	protected $fillable = ['titulo', 'sinopse'];
+	
+	public function genero()
+	{
+		return $this->belongsTo(genero::class);
+	}
+    use HasFactory;
+}
+
+genero:
+
+class genero extends Model
+{
+	protected $fillable = ['descritivo'];
+	public function livros()
+	{
+		return $this->hasMany(livro::class);
+	}
+    use HasFactory;
+}
+
+12. criar o generoController com o comando:
+C:\xampp\htdocs\editoral>php artisan make:controller generoController --resource
+
+13.sobe no servidor 
+C:\xampp\htdocs\editoral>php artisan serve
+
+14.Criar o factory de livro e genero dentro do Database
+
+c:\xampp\htdocs\editoraL>php artisan make:factory GeneroFactory
+c:\xampp\htdocs\editoraL>php artisan make:factory LivroFactory
+
+15. ir dentro do arquivo database->factory->
+
+genero:
+
+public function definition(): array
+{
+	return ['descritivo'=>$this->faker->words(2,true)];
+}
+
+livro:
+
+public function definition(): array
+{
+	return ['titulo'=>$this->faker->words(3,true),'sinopse'=>$this->faker->sentence];
+}
+
+16. ir em database->seeders editar o arquivo database.php
+
+public function run(): void
+{
+	\App\models\gênero::factory(10)->hasLivros(20)->create();
+
+}
+
+17.subir no banco de dados
+c:\xampp\htdocs\editoraL>php artisan db:seed
+
+18. ir em resources-> view para criar o arquivo listar_generos.blade.php e edit_generos.blade.php
+
+listar:
+
+@extends('layouts.layout')
+@section('content')
+		<table>
+			<tr>
+				<th>Código</th>
+				<th>Descritivo</th>
+				<th>Ações</th>
+			</tr>
+			@foreach($dados as $genero)
+				<tr>
+					<td>{{$genero->id}}</td>
+					<td>{{$genero->descritivo}}</td>
+					<td>
+						<a href='#'>Alterar</a>
+						<a href='/alterar/{{$genero->id}}'>Alterar</a>
+						<a href='#'>Excluir</a>
+						<a href='/deletar/{{$genero->id}}'>Excluir</a>
+						
+					</td>
+				</tr>
+			@endforeach
+		</table>
+		<a href='#'>Novo Gênero</a>
+@endsection
+
+edit:
+
+@extends('layouts.layout')
+@section('content')
+<h1>genero</h1>
+@csrf
+<form action="" method="post">
+    <label>Descritivo</label>
+    <input type="text" name="descritivo">
+    <br><br>
+    <input type="submit" value="cadastrar">
+</form>
+
+@endsection
+
+19. ir em routes->web.php
+
+Route::get('/',[\App\Http\Controllers\generoController::class,'index']);
+Route::get('/deletar/{id}',[\App\Http\Controllers\generoController::class,'destroy']);
+Route::get('/inserir/{id}',[\App\Http\Controllers\generoController::class,'create']);
+Route::post('/cadastrar/{id}',[\App\Http\Controllers\generoController::class,'store']);
+Route::get('/alterar/{id}',[\App\Http\Controllers\generoController::class,'edit']);
+Route::get('/update/{id}',[\App\Http\Controllers\generoController::class,'update']);
+
+20. ir em http-> controllers->generoController
+
+ public function index()
+    {
+        $dados =  genero::all(); 
+		//dd($dados);
+		return view('listar_generos', compact('dados'));
+    }
+public function create()
+    {
+        return view('form_genero');
+
+    }
+
+public function store(Request $request)
+{
+	//dd($request);
+	$dados = $request->all();
+	$genero = genero::create($dados);
+	return redirect("/");
+}
+public function edit(string $id)
+{
+	$genero = genero::find($id);
+	return view('edit_genero', compact('genero'));
+	//dd($genero); tipo var_dump
+}
+public function update((Request $request, string $id))
+{
+	$dados = $request->all();
+	$genero = genero::find($id);
+	$genero->update($dados);
+	return redirect("/");
+}
