@@ -18,4 +18,4 @@ Route::get('/deletar/{id}',[\App\Http\Controllers\generoController::class,'destr
 Route::get('/inserir',[\App\Http\Controllers\generoController::class,'create']);
 Route::post('/cadastrar/{id}',[\App\Http\Controllers\generoController::class,'store']);
 Route::get('/alterar/{id}',[\App\Http\Controllers\generoController::class,'edit']);
-Route::get('/update/{id}',[\App\Http\Controllers\generoController::class,'update']);
+Route::post('/update/{id}',[\App\Http\Controllers\generoController::class,'update']);
