@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\livro;
 class livroController extends Controller
 {
     /**
@@ -11,7 +11,7 @@ class livroController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -59,6 +59,6 @@ class livroController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 }
