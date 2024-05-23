@@ -11,7 +11,8 @@ class livroController extends Controller
      */
     public function index()
     {
-        
+        $dados =  livro::all();
+        return view('listar_livros', compact('dados'));
     }
 
     /**
@@ -19,7 +20,7 @@ class livroController extends Controller
      */
     public function create()
     {
-        //
+        return view('form_livros');
     }
 
     /**
@@ -27,7 +28,9 @@ class livroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->all();
+        $livro = livro::create($dados);
+        return redirect("/");
     }
 
     /**
@@ -43,7 +46,8 @@ class livroController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $livro = livro::find($id);
+	    return view('edit_livros', compact('livro'));
     }
 
     /**
@@ -51,7 +55,10 @@ class livroController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->all();
+	    $livro = livro::find($id);
+	    $livro->update($dados);
+	    return redirect("/");
     }
 
     /**
@@ -59,6 +66,8 @@ class livroController extends Controller
      */
     public function destroy(string $id)
     {
-        
+        $livro = livro::find($id);
+		$livro->delete();
+		return redirect('/');
     }
 }
