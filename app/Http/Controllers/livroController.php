@@ -58,7 +58,7 @@ class livroController extends Controller
         $dados = $request->all();
 	    $livro = livro::find($id);
 	    $livro->update($dados);
-	    return redirect("/");
+	    return redirect("/livros");
     }
 
     /**
@@ -68,6 +68,6 @@ class livroController extends Controller
     {
         $livro = livro::find($id);
 		$livro->delete();
-		return redirect('/');
+		return redirect('/livros');
     }
 }

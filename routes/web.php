@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/generos',[\App\Http\Controllers\generoController::class,'index']);
+Route::get('/',[\App\Http\Controllers\generoController::class,'index']);
 Route::get('/deletar/{id}',[\App\Http\Controllers\generoController::class,'destroy']);
 Route::get('/inserir',[\App\Http\Controllers\generoController::class,'create']);
 Route::post('/cadastrar/{id}',[\App\Http\Controllers\generoController::class,'store']);
