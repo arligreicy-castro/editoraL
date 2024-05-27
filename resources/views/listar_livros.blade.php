@@ -2,16 +2,16 @@
 @section('content')
 		<table>
 			<tr>
-				<th>Código</th>
 				<th>Título</th>
                 <th>Sinopse</th>
+				<th>Genero</th>
 				<th>Ações</th>
 			</tr>
-			@foreach($dados as $livro)
+			@foreach($livros as $livro)
 				<tr>
-					<td>{{$livro->id}}</td>
 					<td>{{$livro->titulo}}</td>
-                    <td>{{$livro->sinopse}}</td>
+					<td>{{$livro->sinopse}}</td>
+                    <td>{{$livro->descritivo}}</td>
 					<td>
 						<a href='/alterar_livro/{{$livro->id}}'>Alterar</a>
 						<a href='/deletar_livro/{{$livro->id}}'>Excluir</a>
@@ -20,5 +20,5 @@
 				</tr>
 			@endforeach
 		</table>
-		<a href='inserir_livro'>Novo Gênero</a>
+		<a href='inserir_livro'>Novo Livro</a>
 @endsection

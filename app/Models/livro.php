@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class livro extends Model
 {
-	protected $fillable = ['titulo', 'sinopse'];
+	protected $fillable = ['genero_id','titulo', 'sinopse'];
 	
 	public function genero()
 	{
-		return $this->belongsTo(genero::class);
+		return $this->belongsTo(genero::class);//pertence a um genero
 	}
     use HasFactory;
 }

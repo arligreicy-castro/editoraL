@@ -240,3 +240,9 @@ public function update((Request $request, string $id))
 	$genero->update($dados);
 	return redirect("/");
 }
+## usando Joins ##
+no controler precisamos acrescentar use
+
+use Illuminate\Support\facades\DB;
+
+21. NO CREATE FAZER O USUARIO ESCOLHER O Genero

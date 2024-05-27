@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\livro;
+use App\Models\genero;
+
+use Illuminate\Support\facades\DB;
 class livroController extends Controller
 {
     /**
@@ -11,8 +14,8 @@ class livroController extends Controller
      */
     public function index()
     {
-        $dados =  livro::all();
-        return view('listar_livros', compact('dados'));
+        $livros =  DB::table('livros')->join('generos', 'livros.genero_id', '=', 'generos.id')->select('livros.*', 'generos.descritivo')->get();
+        return view('listar_livros', compact('livros'));
     }
 
     /**
@@ -20,7 +23,8 @@ class livroController extends Controller
      */
     public function create()
     {
-        return view('form_livros');
+        $generos = genero::all(['id','descritivo']);
+        return view('form_livros', compact('generos'));
     }
 
     /**
@@ -29,8 +33,9 @@ class livroController extends Controller
     public function store(Request $request)
     {
         $dados = $request->all();
-        $livro = livro::create($dados);
-        return redirect("/");
+        $genero = genero::find($dados["genero_id"]);
+        $genero->livros()->create($dados); // esta fazendo migração com o model genero
+        return redirect("/listar_livros");
     }
 
     /**

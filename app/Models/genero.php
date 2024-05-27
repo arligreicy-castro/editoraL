@@ -10,7 +10,7 @@ class genero extends Model
 	protected $fillable = ['descritivo'];
 	public function livros()
 	{
-		return $this->hasMany(livro::class);
+		return $this->hasMany(livro::class); // um genero pode ter varios livros
 	}
     use HasFactory;
 }
