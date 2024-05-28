@@ -51,8 +51,9 @@ class livroController extends Controller
      */
     public function edit(string $id)
     {
+        $generos = genero::all(['id', 'descritivo']);
         $livro = livro::find($id);
-	    return view('edit_livros', compact('livro'));
+	    return view('edit_livros', compact('generos','livro'));
     }
 
     /**
@@ -63,7 +64,7 @@ class livroController extends Controller
         $dados = $request->all();
 	    $livro = livro::find($id);
 	    $livro->update($dados);
-	    return redirect("/livros");
+	    return redirect("/listar_livros");
     }
 
     /**
@@ -73,6 +74,6 @@ class livroController extends Controller
     {
         $livro = livro::find($id);
 		$livro->delete();
-		return redirect('/livros');
+		return redirect('/listar_livros');
     }
 }
